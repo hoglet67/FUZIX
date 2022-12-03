@@ -44,7 +44,7 @@ image:
 	$(CROSS_CC) $(CROSS_CCOPTS) -O0 -c -o ../bank16k.o ../bank16k.c
 	$(CROSS_CC) $(CROSS_CCOPTS) -O0 -c -o devtty.o devtty.c
 	$(CROSS_CC) $(CROSS_CC_VIDEO) $(CROSS_CCOPTS) -O0 -c -o ../usermem.o ../usermem.c
-	$(CROSS_LD) -o ../fuzix.bin -Map=../fuzix.map --script=fuzix.link --oformat=raw \
+	$(CROSS_LD) -o ../fuzix.srec -Map=../fuzix.map --script=fuzix.link --oformat=srec \
 	crt0.o commonmem.o \
 	blitsbc09.o ../start.o ../version.o ../lowlevel-6809.o \
 	tricks.o main.o ../timer.o ../kdata.o devices.o \
@@ -55,6 +55,7 @@ image:
 	../syscall_exec.o ../syscall_exec16.o ../syscall_fs3.o \
 	../usermem_std-6809.o devtty.o libc.o ../vt.o usermem_sbc09.o \
 	videoll.o ../blk512.o
+	srec_cat -Output ../fuzix.bin -Binary  ../fuzix.srec
 
 boot.bin: boot/boot.s
 	lwasm -lboot.list --format=raw -oboot.bin boot/boot.s

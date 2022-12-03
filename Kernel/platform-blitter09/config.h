@@ -72,16 +72,6 @@
 #define NMOUNTS	 4	  /* Number of mounts at a time - nothing mountable! */
 
 
-/* Drivewire Defines */
-
-#define DW_VSER_NUM 4     /* No of Virtual Serial Ports */
-#define DW_VWIN_NUM 4     /* No of Virtual Window Ports */
-#define DW_MIN_OFF  3     /* Minor number offset */
-
 /* Block device define. Each block device can have upto 16 partitions */
-#define MAX_BLKDEV  1     /* 1 SD drive */
+#define MAX_BLKDEV  1     /* 1 JIM RAM drive */
 
-#undef CONFIG_IDE         /* enable if IDE interface present */
-
-#define CONFIG_SD         /* enable if SD  interface present */
-#define SD_DRIVE_COUNT 1  /* 1 drive */

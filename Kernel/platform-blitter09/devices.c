@@ -40,6 +40,6 @@ bool validdev(uint16_t dev)
 }
 void device_init(void)
 {
-
+  dev_jimram_init( );
 }
 

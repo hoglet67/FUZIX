@@ -1,12 +1,12 @@
 
-CSRCS += devices.c main.c libc.c
+CSRCS += devices.c main.c libc.c dev_jimram.c
 
 CDSRCS = 
 
 DSRCS = ../dev/blkdev.c ../dev/mbr.c
 
 ASRCS = blitsbc09.s crt0.s
-ASRCS += tricks.s commonmem.s usermem_sbc09.s videoll.s
+ASRCS += tricks.s commonmem.s usermem_sbc09.s dev_jimram_int.s videoll.s
 
 COBJS = $(CSRCS:.c=$(BINEXT))
 AOBJS = $(ASRCS:.s=$(BINEXT))
@@ -49,6 +49,7 @@ image:
 	blitsbc09.o ../start.o ../version.o ../lowlevel-6809.o \
 	tricks.o main.o ../timer.o ../kdata.o devices.o \
 	blkdev.o mbr.o \
+	dev_jimram.o dev_jimram_int.o \
 	../devio.o ../filesys.o ../process.o ../inode.o ../syscall_fs.o \
 	../syscall_proc.o ../syscall_other.o ../mm.o ../bank16k.o ../swap.o \
 	../tty.o ../devsys.o ../usermem.o ../syscall_fs2.o \

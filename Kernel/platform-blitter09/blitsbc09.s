@@ -244,10 +244,10 @@ init_hardware:
 
 	clr	curr_tr		; indicate kernel mapping is in force
 
-	;; Multicomp09 has RAM at the hardware vector positions
+	;; SBC09 has RAM at the hardware vector positions but they are offset 
+	;; to appear at F7Fx
 	;; so we can write the addresses directly; 2 bytes per vector:
-	;; no need for a jump op-code.
-	ldx	#0xfff2		; address of SWI3 vector
+	ldx	#0xf7f2		; address of SWI3 vector
 	ldy	#badswi_handler
 	sty	,x++		; SWI3 handler
 	sty	,x++		; SWI2 handler

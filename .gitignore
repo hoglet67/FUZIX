@@ -24,3 +24,10 @@ size.report
 bin
 *.bak
 Kernel/fuzix.srec
+Images/blitter09/
+Library/libs/readline6809.lib
+Standalone/elf2flt
+Standalone/fsck400
+Standalone/mkfs400
+Standalone/mkftl
+Standalone/sethint

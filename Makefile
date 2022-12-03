@@ -115,6 +115,12 @@ diskimage: stand ltools libs apps kernel
 	+(cd Standalone/filesystem-src; ./build-filesystem $(ENDIANFLAG) $(FUZIX_ROOT)/Images/$(TARGET)/filesys.img 256 65535)
 	+(cd Kernel; $(MAKE) diskimage)
 
+diskimage_ram: stand ltools libs apps kernel
+	mkdir -p Images/$(TARGET)
+	+(cd Standalone/filesystem-src; ./build-filesystem $(ENDIANFLAG) $(FUZIX_ROOT)/Images/$(TARGET)/filesys.img 64 400)
+	+(cd Kernel; $(MAKE) diskimage)
+
+
 kclean:
 	+(cd Kernel; $(MAKE) clean)
 

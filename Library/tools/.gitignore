@@ -13,3 +13,13 @@
 /syscall_6809
 /syscall_8080
 /syscall_msp430x
+/binman85
+/relocbin6303
+/relocbin65
+/relocbin6809
+/relocbin8080
+/relocbinhc11
+/shlibgen
+/syscall_armm4
+
+

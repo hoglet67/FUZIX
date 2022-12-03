@@ -56,7 +56,7 @@
 # v65c816:	Virtual platform for 65c816 development (flat memory)
 # v68:		Virtual platform for 68000 development
 
-TARGET=cpm22
+TARGET=blitter09
 
 # Get the CPU type
 include Kernel/platform-$(TARGET)/target.mk

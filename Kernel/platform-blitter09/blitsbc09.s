@@ -135,31 +135,6 @@ _plt_reboot:
         bra     _plt_reboot    ; [NAC HACK 2016May07] endless loop
 
 
-        lda	#0x38		; put RAM block in memory
-	sta	0xffa8		;
-	;; copy reboot bounce routine down
-	ldx	#0		;
-	ldu	#bounce@
-loop@	lda	,u+
-	sta	,x+
-	cmpu	#bounce_end@
-	bne	loop@
-	jmp	0		;
-	;; this code is PIC and gets copied down to
-	;; low memory on reboot to bounce to the reset
-	;; vector.
-bounce@
-	;; [NAC HACK 2016May01] todo.. for multicomp need to re-enable the ROM.
-	;; how to test this??
-	lda	#0x06		; reset GIME (map in internal 32k rom)
-	sta  	0xff90
-	clr	0xff91
-	clr	0x72
-	jmp	[0xfffe]	; jmp to reset vector
-bounce_end@
-
-
-
 ;;; Turn off interrupts
 ;;;    takes: nothing
 ;;;    returns: B = original irq (cc) state
@@ -360,6 +335,8 @@ map_kernel:
 	sta	MMU_MAP+MMU_16_4
 	lda	_krn_mmu_map+2
 	sta	MMU_MAP+MMU_16_8
+;	lda	_krn_mmu_map+3
+;	sta	MMU_MAP+MMU_16_C
 
 	clr	curr_tr			; indicate kernel mode
 
@@ -390,6 +367,9 @@ map_process_2:
 	lda	,X+
 	sta	,Y+
 	sta	MMU_MAP+MMU_16_8
+;	lda	,X+
+;	sta	,Y+
+;	sta	MMU_MAP+MMU_16_C
 
 	lda 	#1
 	sta	curr_tr			; indicate user mode
@@ -419,6 +399,8 @@ map_restore:
 	sta	MMU_MAP+MMU_16_4
 	lda	,Y+
 	sta	MMU_MAP+MMU_16_8
+;	lda	,Y+
+;	sta	MMU_MAP+MMU_16_C
 
 	lda	#1
 	sta	curr_tr

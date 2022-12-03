@@ -33,6 +33,12 @@ void do_beep(void)
 {
 }
 
+void plt_copyright(void)
+{
+	kprintf("Bitter+SBC09 platform Copyright (c) 2022 Dominic Beesley\n");
+}
+
+
 /*
  Map handling: We have flexible paging. Each map table consists
  of a set of pages with the last page repeated to fill any holes.

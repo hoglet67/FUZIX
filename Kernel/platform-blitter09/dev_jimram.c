@@ -57,9 +57,22 @@ uint8_t dev_jimram_transfer_sector(void)
 		panic("No Blitter DEV");
 	}
 
- 	ptr=((uint8_t *)(&blk_op.lba));
+	kprintf("JIM:%s %ld %x %x\n", blk_op.is_read?"read":"write", blk_op.lba, blk_op.is_user, blk_op.addr);
+
+	uint32_t lba256 = (blk_op.lba)*2;
+
+ 	ptr=((uint8_t *)(&lba256));
  	fred_JIM_PAGE_LO = ptr[3];	//LSB
  	fred_JIM_PAGE_HI = (ptr[2] + 0x10) & 0x7F;
+
+
+	if( blk_op.is_read ){
+		fptr = dev_jimram_read;
+	}
+	else{
+		fptr = dev_jimram_write;
+	}
+
 
 	/* do the low-level data transfer (512 bytes) */
 	fptr( blk_op.addr );
@@ -88,8 +101,11 @@ void dev_jimram_init()
 		blk->driver_data = 0 ;
 		blk->transfer = dev_jimram_transfer_sector;
 		blk->flush = dev_jimram_flush;
-		blk->drive_lba_count=400;									//TODO:DB: this is just what I set in filesystem build?!
-		blkdev_scan(blk, 0);
+		blk->drive_lba_count=2000;									//TODO:DB: this is just what I set in filesystem build?!
+		//blkdev_scan(blk, 0);
+		blk->lba_first[1]=1;
+		blk->lba_count[1]2000;
+
 
 		kputs("ok.\n");
 	}

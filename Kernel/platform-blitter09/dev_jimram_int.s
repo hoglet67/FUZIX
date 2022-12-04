@@ -6,8 +6,8 @@
 	.globl blk_op		; blk operation arguments
 
 ;;; exported
-	.globl _devsd_write
-	.globl _devsd_read
+	.globl _dev_jimram_write
+	.globl _dev_jimram_read
 
         include "platform.def"
 

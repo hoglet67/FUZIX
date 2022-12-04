@@ -1,9 +1,9 @@
-#undef DEBUG_SYSCALL		/* turn this on to enable syscall tracing */
-#undef DEBUG_SLEEP		/* turn this on to trace sleep/wakeup activity */
-#undef DEBUGHARDER		/* report calls to wakeup() that lead nowhere */
-#undef DEBUGREALLYHARD		/* turn on getproc dumping */
-#undef DEBUG_PREEMPT		/* debug pre-emption */
-#undef DEBUG_NREADY		/* debug nready counting */
+#define DEBUG_SYSCALL		/* turn this on to enable syscall tracing */
+#define DEBUG_SLEEP		/* turn this on to trace sleep/wakeup activity */
+#define DEBUGHARDER		/* report calls to wakeup() that lead nowhere */
+#define DEBUGREALLYHARD		/* turn on getproc dumping */
+#define DEBUG_PREEMPT		/* debug pre-emption */
+#define DEBUG_NREADY		/* debug nready counting */
 
 #include <kernel.h>
 #include <tty.h>

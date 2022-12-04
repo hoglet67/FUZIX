@@ -57,6 +57,7 @@
 # v68:		Virtual platform for 68000 development
 
 TARGET=blitter09
+ENDIANFLAG=-X
 
 # Get the CPU type
 include Kernel/platform-$(TARGET)/target.mk
@@ -117,7 +118,7 @@ diskimage: stand ltools libs apps kernel
 
 diskimage_ram: stand ltools libs apps kernel
 	mkdir -p Images/$(TARGET)
-	+(cd Standalone/filesystem-src; ./build-filesystem $(ENDIANFLAG) $(FUZIX_ROOT)/Images/$(TARGET)/filesys.img 64 400)
+	+(cd Standalone/filesystem-src; ./build-mini-filesystem $(ENDIANFLAG) $(FUZIX_ROOT)/Images/$(TARGET)/filesys.img 64 2000)
 	+(cd Kernel; $(MAKE) diskimage)
 
 

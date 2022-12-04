@@ -1,3 +1,6 @@
+#define DEBUG 1
+
+
 /* Enable to make ^Z dump the inode table for debug */
 #undef CONFIG_IDUMP
 /* Enable to make ^A drop back into the monitor */
@@ -52,7 +55,7 @@
    -- so 0x0001 is hda1
    Without this defined, get prompted for root device at boot time
 */
-#define BOOTDEVICE 0x0001
+#define BOOTDEVICE 0x0000
 
 /* We need a tidier way to do this from the loader */
 #define CMDLINE	 NULL	  /* Location of root dev name */

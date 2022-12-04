@@ -104,7 +104,7 @@ void dev_jimram_init()
 		blk->drive_lba_count=2000;									//TODO:DB: this is just what I set in filesystem build?!
 		//blkdev_scan(blk, 0);
 		blk->lba_first[1]=1;
-		blk->lba_count[1]2000;
+		blk->lba_count[1]=2000;
 
 
 		kputs("ok.\n");

@@ -16,6 +16,15 @@ int16_t mode;
 
 arg_t _open(void)
 {
+
+	kputs("DB:_open");
+	uint8_t *p = name;
+	uint8_t c;
+	while (c = _ugetc(p++)) {
+		kputchar(c);
+	}
+	kputs("\n");
+
 	int_fast8_t uindex;
 	int_fast8_t oftindex;
 	staticfast inoptr ino;

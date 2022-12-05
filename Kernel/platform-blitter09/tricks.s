@@ -73,32 +73,11 @@ _switchin:
 
 	stx 	_swapstack	; save passed page table *
 
-	;;DB; not clear what should be happening here I'll just poke at the top part of the map....but that's where this code is!
+	; swap in new tasks common area
 	lda	P_TAB__P_PAGE_OFFSET+3,X
 	sta	MMU_MAP+MMU_16_C
-
-;;;;;; [NAC HACK 2016May03] this is only flipping in top 8K .. as is coco3.
-;;;	lda	curr_tr		; Select MMU register associated with
-;;;	ora	#7		; top 8K of usr map
-;;;	sta	MMUADR
-;;;
-;;;	;; flip in the newly choosen task's common page to usr map
-;;;	lda	P_TAB__P_PAGE_OFFSET+3,x
-;;;	inca
-;;;	sta	MMUDAT
-;;;	sta	_usr_mmu_map+7	; keep the mirror in sync.
-;;;
-;;;	lda	curr_tr		; Select MMU register associated with
-;;;	ora	#$f		; top 8K of krn map
-;;;	sta	MMUADR
-;;;
-;;;	;; flip in the newly choosen task's common page to krn map
-;;;	lda	P_TAB__P_PAGE_OFFSET+3,x
-;;;	inca
-;;;	sta	MMUDAT
-;;;	sta	_krn_mmu_map+7	; keep the mirror in sync.
-;;;
-;;;	;; --------- No Stack ! --------------
+	sta 	_krn_mmu_map+3
+	sta	_usr_mmu_map+3
 
         ; check u_data->u_ptab matches what we wanted
 	ldx 	_swapstack
@@ -204,8 +183,7 @@ fork_copy:
 	puls	cc		       ; get remainder's cc (  )
 	beq	skip@		       ; skip round-up if zero
 	inca			       ; round up
-	cmpa	#4		       ; is 4th bank copied?
-	pshs	cc,a		       ; and put on stack ( 4th?  no )
+	pshs	a		       ; and put on stack as counter
 	;; copy parent's whole pages to child's
 skip@	ldx	fork_proc_ptr
 	leax	P_TAB__P_PAGE_OFFSET,x ; X = * new process page tables (dest)
@@ -213,39 +191,20 @@ skip@	ldx	fork_proc_ptr
 loop@	ldb	,x+		       ; B = child's next page
 	lda	,u+		       ; A = parent's next page
 	jsr	copybank	       ; copy bank
-	dec	1,s		       ; bump counter
+	dec	,S		       ; bump counter
 	bne	loop@
-	;; copy UDATA + common (if needed)
+
+	leas	1,S			; unstack counter 
+
+	;; copy UDATA + common
 	ldx	fork_proc_ptr	       ; X = new process ptr
 	ldb	P_TAB__P_PAGE_OFFSET+3,x ;  B = child's UDATA/common page
-	puls	cc,a		       ; pull 4th? condition codes
-	beq	skip2@		       ; 4th bank already copied?
 	lda	U_DATA__U_PAGE+3	 ;  A = parent's UDATA/common page
 	jsr	copybank		 ; copy it
 	;; remap common page in MMU to new process
-skip2@	
-
-	;DB: unsure of incb here
-	stb _krn_mmu_map+3
-	stb _usr_mmu_map+3
-	stb MMU_MAP+MMU_16_C
-
-;;;;;;DB:	incb
-;;;;;;DB:        ;;
-;;;;;;DB:        ;;
-;;;;;;DB:        ;; 	stb	0xffaf
-;;;;;;DB:        ;; 	stb	0xffa7
-;;;;;;DB:	lda	curr_tr		; Select MMU register associated with
-;;;;;;DB:	ora	#$f		; top 8K of krn map
-;;;;;;DB:        sta     MMUADR
-;;;;;;DB:        stb     MMUDAT
-;;;;;;DB:	stb	_krn_mmu_map+7	; keep the mirror in sync.
-;;;;;;DB:
-;;;;;;DB:	lda	curr_tr		; Select MMU register associated with
-;;;;;;DB:	ora	#7		; top 8K of usr map
-;;;;;;DB:        sta     MMUADR
-;;;;;;DB:        stb     MMUDAT
-;;;;;;DB:	stb	_usr_mmu_map+7	; keep the mirror in sync.
+	stb	MMU_MAP+MMU_16_C
+	stb	_krn_mmu_map+3		; keep the mirror in sync.
+	stb	_usr_mmu_map+3		; keep the mirror in sync.
 	;;
 	; --- we are now on the stack copy, parent stack is locked away ---
 	rts	; this stack is copied so safe to return on

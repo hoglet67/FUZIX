@@ -91,12 +91,17 @@ static int maps_needed(uint16_t top)
  */
 static int pagemap_alloc2(ptptr p, uint8_t c)
 {
+
 	uint8_t *ptr = (uint8_t *) & p->p_page;
 	int needed = maps_needed(p->p_top);
 	int i;
 
 	if (c)
 		needed--;
+
+	kprintf("MAPALLOC: needed = %d\n", needed);
+
+
 #ifdef SWAPDEV
 	/* Throw our toys out of our pram until we have enough room */
 	while (needed > pfptr)
@@ -117,6 +122,10 @@ static int pagemap_alloc2(ptptr p, uint8_t c)
 		ptr[i] = c;
 		i++;
 	}
+
+	for (i = 0; i < 4; i++)
+		kprintf("MAPALLOC: %d %x\n", i, (int)ptr[i]);
+
 	return 0;
 }
 

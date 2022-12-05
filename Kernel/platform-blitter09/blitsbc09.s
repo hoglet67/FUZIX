@@ -286,7 +286,7 @@ _program_vectors:
 	;; restore the MMU mapping that we trampled on
 	;; MMUADR still has block 8 selected so no need to re-write it.
 
-	;; retrieve value that used to be in block 8
+	;; retrieve value that used to be in block 0
 	lda	_krn_mmu_map
 	;; and restore it
 	sta	MMU_MAP+MMU_16_0
@@ -335,8 +335,8 @@ map_kernel:
 	sta	MMU_MAP+MMU_16_4
 	lda	_krn_mmu_map+2
 	sta	MMU_MAP+MMU_16_8
-;	lda	_krn_mmu_map+3
-;	sta	MMU_MAP+MMU_16_C
+	lda	_krn_mmu_map+3
+	sta	MMU_MAP+MMU_16_C
 
 	clr	curr_tr			; indicate kernel mode
 
@@ -367,9 +367,9 @@ map_process_2:
 	lda	,X+
 	sta	,Y+
 	sta	MMU_MAP+MMU_16_8
-;	lda	,X+
-;	sta	,Y+
-;	sta	MMU_MAP+MMU_16_C
+	lda	,X+
+	sta	,Y+
+	sta	MMU_MAP+MMU_16_C
 
 	lda 	#1
 	sta	curr_tr			; indicate user mode
@@ -399,8 +399,8 @@ map_restore:
 	sta	MMU_MAP+MMU_16_4
 	lda	,Y+
 	sta	MMU_MAP+MMU_16_8
-;	lda	,Y+
-;	sta	MMU_MAP+MMU_16_C
+	lda	,Y+
+	sta	MMU_MAP+MMU_16_C
 
 	lda	#1
 	sta	curr_tr

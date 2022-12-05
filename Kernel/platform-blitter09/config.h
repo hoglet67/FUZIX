@@ -30,7 +30,7 @@
 #define SWAP_SIZE   0x62
 /* FIXME */
 #define SWAPBASE    0x0000	/* We swap the lot in one, include the */
-#define SWAPTOP	    0xC300	/* uarea so its a round number of sectors */
+#define SWAPTOP	    0xE200	/* uarea so its a round number of sectors */
 #define UDATA_BLOCKS	0	/* We swap the uarea in the data */
 #define UDATA_SWAPSIZE	0
 #define MAX_SWAPS	32
@@ -41,7 +41,7 @@
 
 #define TICKSPERSEC 100      /* Ticks per second */
 #define PROGBASE    0x0100  /* also data base */
-#define PROGTOP     0xe000  /* Top of program, base of U_DATA */
+#define PROGTOP     0xE000  /* Top of program, base of U_DATA */
 #define PROGLOAD    0x0100  /* ??? */
 
 #define BOOT_TTY (512 + 1)   /* Set this to default device for stdio, stderr */

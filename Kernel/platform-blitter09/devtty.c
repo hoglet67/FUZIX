@@ -111,7 +111,8 @@ void plt_interrupt(void)
 
 	if (*sheila_ACIA_CTL & ACIA_RDRF)
 	{ 
-		tty_inproc(1, *sheila_ACIA_DATA); 
+		c = *sheila_ACIA_DATA;
+		tty_inproc(1, c); 
 	}
 
 	c = *sheila_SYSVIA_ifr;

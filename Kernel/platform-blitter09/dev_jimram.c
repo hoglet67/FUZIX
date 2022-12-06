@@ -74,6 +74,10 @@ uint8_t dev_jimram_transfer_sector(void)
 	}
 
 
+	//TODO: DB this is a bit belt and braces, to preserve file system from random memory scribbles
+	fred_JIM_DEVNO = 0;
+
+
 	/* do the low-level data transfer (512 bytes) */
 	fptr( blk_op.addr );
 

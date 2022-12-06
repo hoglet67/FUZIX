@@ -39,6 +39,8 @@ $(AOBJS): %$(BINEXT): %.s kernel.def platform.def ../kernel09.def
 
 clean:
 	rm -f $(OBJS) $(JUNK)  core *~
+	#not sure why devtty needs to be compiled separately but it does (-o0?)
+	rm -f devtty.o
 
 image:
 	$(CROSS_CC) $(CROSS_CCOPTS) -O0 -c -o ../bank16k.o ../bank16k.c

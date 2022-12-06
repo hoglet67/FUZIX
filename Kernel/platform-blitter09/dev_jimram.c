@@ -57,8 +57,7 @@ uint8_t dev_jimram_transfer_sector(void)
 		panic("No Blitter DEV");
 	}
 
-	kprintf("JIM:%s %ld %x %x\n", blk_op.is_read?"read":"write", blk_op.lba, blk_op.is_user, blk_op.addr);
-
+	
 	uint32_t lba256 = (blk_op.lba)*2;
 
  	ptr=((uint8_t *)(&lba256));

@@ -10,8 +10,8 @@ static uint8_t tbuf1[TTYSIZ];   /* virtual serial port 0: console */
 
 
 #define sheila_ACIA_CTL		((uint8_t *)0xFE08)
-#define ACIA_RDRF		0x01
-#define ACIA_TDRE		0x02
+#define ACIA_RDRF		((uint8_t)0x01)
+#define ACIA_TDRE		((uint8_t)0x02)
 
 #define sheila_ACIA_DATA	((uint8_t *)0xFE09)
 #define sheila_SERIAL_ULA	((uint8_t *)0xFE10)
@@ -111,6 +111,7 @@ void plt_interrupt(void)
 
 	if (*sheila_ACIA_CTL & ACIA_RDRF)
 	{ 
+		kputchar(".");
 		tty_inproc(1, *sheila_ACIA_DATA); 
 	}
 

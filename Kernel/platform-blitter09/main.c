@@ -48,10 +48,10 @@ void pagemap_init(void)
 {
     int i;
     // Add 
-    for (i = 0x88; i < 0xA0; i++)
+    for (i = 0x90; i < 0xC0; i+=2)
         pagemap_add(i);
     /* add common page last so init gets it */
-    pagemap_add(0x87);
+    pagemap_add(0x8E);
 }
 
 void map_init(void)

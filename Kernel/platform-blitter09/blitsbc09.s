@@ -121,9 +121,9 @@ _need_resched
 
 ;;; SBC09 16K*4 memory maps 0 (kernel), 1 (user) 
 _krn_mmu_map
-	.db	$88,$8A,$8C,$8E ; mmu registers 0-14 (mod 2)
+	.db	$84,$85,$86,$87 ; mmu registers 0-14 (mod 2)
 _usr_mmu_map
-	.db	$88,$8A,$8C,$8E ; mmu registers 16-30 (mod 2)
+	.db	$84,$85,$86,$87 ; mmu registers 16-30 (mod 2)
 
 
 _plt_monitor:

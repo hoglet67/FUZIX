@@ -111,7 +111,6 @@ void plt_interrupt(void)
 
 	if (*sheila_ACIA_CTL & ACIA_RDRF)
 	{ 
-		kputchar(".");
 		tty_inproc(1, *sheila_ACIA_DATA); 
 	}
 

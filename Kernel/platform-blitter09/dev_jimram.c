@@ -57,7 +57,7 @@ uint8_t dev_jimram_transfer_sector(void)
 		panic("No Blitter DEV");
 	}
 
-	
+
 	uint32_t lba256 = (blk_op.lba)*2;
 
  	ptr=((uint8_t *)(&lba256));
@@ -69,7 +69,8 @@ uint8_t dev_jimram_transfer_sector(void)
 		fptr = dev_jimram_read;
 	}
 	else{
-		fptr = dev_jimram_write;
+		//DB:TODO: temporarily disable writes!	fptr = dev_jimram_write;
+		kprintf("JIM:%s %ld %x %x\n", blk_op.is_read?"read":"write", blk_op.lba, blk_op.is_user, blk_op.addr);
 	}
 
 

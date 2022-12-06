@@ -7,6 +7,7 @@
 #include <vt.h>
 #include <devtty.h>
 #include <blkdev.h>
+#include <dev_jimram.h>
 /* [NAC HACK 2016Apr24] add ds1302 */
 
 struct devsw dev_tab[] =  /* The device driver switch table */

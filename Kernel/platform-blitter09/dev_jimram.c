@@ -70,7 +70,7 @@ uint8_t dev_jimram_transfer_sector(void)
 	}
 	else{
 		//DB:TODO: temporarily disable writes!	fptr = dev_jimram_write;
-		kprintf("JIM:%s %ld %x %x\n", blk_op.is_read?"read":"write", blk_op.lba, blk_op.is_user, blk_op.addr);
+		//kprintf("JIM:%s %ld %x %x\n", blk_op.is_read?"read":"write", blk_op.lba, blk_op.is_user, blk_op.addr);
 	}
 
 

@@ -327,8 +327,7 @@ map_process:
 ;;;   modifies: nothing - all registers preserved
 ;;;	Map in the kernel below the current common, all registers preserved
 map_kernel:
-	pshs	a,cc
-	orcc	#$10			; mask IRQ so MMU update atomic
+	pshs	a
 
 	lda	_krn_mmu_map
 	sta	MMU_MAP+MMU_16_0
@@ -341,7 +340,7 @@ map_kernel:
 
 	clr	curr_tr			; indicate kernel mode
 
-	puls 	a,cc,pc
+	puls 	a,pc
 
 ;;; User is in MAP0 with the top 8K as common
 ;;; As the core code currently does 16K happily but not 8 we just pair
@@ -354,8 +353,7 @@ map_kernel:
 ;;;   returns: nothing
 ;;;   modifies: nothing - all registers preserved
 map_process_2:
-	pshs	x,y,a,b,cc
-	orcc	#$10			; mask IRQ so MMU update atomic
+	pshs	x,y,a,b
 
 	;; first, copy entries from page table to usr_mmu_map
 	ldy	#_usr_mmu_map
@@ -376,7 +374,7 @@ map_process_2:
 	lda 	#1
 	sta	curr_tr			; indicate user mode
 
-	puls	x,y,a,b,cc,pc	; so had better include common!
+	puls	x,y,a,b,pc	; so had better include common!
 
 ;;;
 ;;;	Restore a saved mapping. We are guaranteed that we won't switch
@@ -390,8 +388,7 @@ map_restore:
 	tst	saved_tr
 	beq	map_kernel
 
-	pshs	A,Y,CC
-	orcc	#$10			; mask IRQ so MMU update atomic
+	pshs	A,Y
 
 	; restore user mao
 	ldy	#_usr_mmu_map
@@ -408,7 +405,7 @@ map_restore:
 	lda	#1
 	sta	curr_tr
 
-	puls	A,Y,CC,PC
+	puls	A,Y,PC
 
 
 

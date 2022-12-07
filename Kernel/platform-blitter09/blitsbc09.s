@@ -329,6 +329,8 @@ map_process:
 map_kernel:
 	pshs	a
 
+	clr	curr_tr			; indicate kernel mode
+
 	lda	_krn_mmu_map
 	sta	MMU_MAP+MMU_16_0
 	lda	_krn_mmu_map+1
@@ -337,8 +339,6 @@ map_kernel:
 	sta	MMU_MAP+MMU_16_8
 	lda	_krn_mmu_map+3
 	sta	MMU_MAP+MMU_16_C
-
-	clr	curr_tr			; indicate kernel mode
 
 	puls 	a,pc
 
@@ -354,6 +354,9 @@ map_kernel:
 ;;;   modifies: nothing - all registers preserved
 map_process_2:
 	pshs	x,y,a,b
+
+	lda 	#1
+	sta	curr_tr			; indicate user mode
 
 	;; first, copy entries from page table to usr_mmu_map
 	ldy	#_usr_mmu_map
@@ -371,9 +374,6 @@ map_process_2:
 	sta	,Y+
 	sta	MMU_MAP+MMU_16_C
 
-	lda 	#1
-	sta	curr_tr			; indicate user mode
-
 	puls	x,y,a,b,pc	; so had better include common!
 
 ;;;
@@ -390,6 +390,9 @@ map_restore:
 
 	pshs	A,Y
 
+	lda	#1
+	sta	curr_tr
+
 	; restore user mao
 	ldy	#_usr_mmu_map
 
@@ -401,9 +404,6 @@ map_restore:
 	sta	MMU_MAP+MMU_16_8
 	lda	,Y+
 	sta	MMU_MAP+MMU_16_C
-
-	lda	#1
-	sta	curr_tr
 
 	puls	A,Y,PC
 

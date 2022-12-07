@@ -41,6 +41,7 @@ clean:
 	rm -f $(OBJS) $(JUNK)  core *~
 	#not sure why devtty needs to be compiled separately but it does (-o0?)
 	rm -f devtty.o
+	rm -f ../fuzix.bin ../fuzix.decb ../fuzix.srec ../fuzix.map ../fuzix.ma2 ../fuzix.decb.bin
 
 image:
 	$(CROSS_CC) $(CROSS_CCOPTS) -O0 -c -o ../bank16k.o ../bank16k.c
@@ -58,7 +59,23 @@ image:
 	../syscall_exec.o ../syscall_exec16.o ../syscall_fs3.o \
 	../usermem_std-6809.o devtty.o libc.o ../vt.o usermem_sbc09.o \
 	videoll.o ../blk512.o
+
 	srec_cat -Output ../fuzix.bin -Binary  ../fuzix.srec
+
+	$(CROSS_LD) -o ../fuzix.decb -Map=../fuzix.ma2 --script=fuzix.link --oformat=decb \
+	crt0.o commonmem.o \
+	blitsbc09.o ../start.o ../version.o ../lowlevel-6809.o \
+	tricks.o main.o ../timer.o ../kdata.o devices.o \
+	blkdev.o mbr.o \
+	dev_jimram.o dev_jimram_int.o \
+	../devio.o ../filesys.o ../process.o ../inode.o ../syscall_fs.o \
+	../syscall_proc.o ../syscall_other.o ../mm.o ../bank16k.o ../swap.o \
+	../tty.o ../devsys.o ../usermem.o ../syscall_fs2.o \
+	../syscall_exec.o ../syscall_exec16.o ../syscall_fs3.o \
+	../usermem_std-6809.o devtty.o libc.o ../vt.o usermem_sbc09.o \
+	videoll.o ../blk512.o
+
+	./decb2bin.pl --base=0 -v ../fuzix.decb ../fuzix.decb.bin
 
 boot.bin: boot/boot.s
 	lwasm -lboot.list --format=raw -oboot.bin boot/boot.s

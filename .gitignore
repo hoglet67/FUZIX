@@ -31,3 +31,7 @@ Standalone/fsck400
 Standalone/mkfs400
 Standalone/mkftl
 Standalone/sethint
+Kernel/fuzix.exo
+Kernel/fuzix.decb
+Kernel/fuzix.decb.bin
+Kernel/fuzix.ma2

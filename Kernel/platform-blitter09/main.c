@@ -51,7 +51,7 @@ void pagemap_init(void)
     for (i = 0x88; i < 0xA0; i++)
         pagemap_add(i);
     /* add common page last so init gets it */
-    pagemap_add(0x87);
+    pagemap_add(0x83);
 }
 
 void map_init(void)

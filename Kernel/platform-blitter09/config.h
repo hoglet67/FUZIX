@@ -55,7 +55,7 @@
    -- so 0x0001 is hda1
    Without this defined, get prompted for root device at boot time
 */
-#define BOOTDEVICE 0x0000
+#define BOOTDEVICE 0x0001
 
 /* We need a tidier way to do this from the loader */
 #define CMDLINE	 NULL	  /* Location of root dev name */
@@ -76,5 +76,7 @@
 
 
 /* Block device define. Each block device can have upto 16 partitions */
-#define MAX_BLKDEV  1     /* 1 JIM RAM drive */
+#define MAX_BLKDEV  5    /* 1 JIM RAM drive, SD Card */
 
+#define CONFIG_SD 1
+#define SD_DRIVE_COUNT 1

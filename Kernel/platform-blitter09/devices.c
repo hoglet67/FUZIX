@@ -44,8 +44,11 @@ __attribute__((section(".discard")))
 void device_init(void)
 {
 
-  dev_jimram_init( );
 
-//  sd_rawinit();
-//  devsd_init();
+
+  sd_rawinit();
+  devsd_init();
+
+//  dev_jimram_init( );
+
 }

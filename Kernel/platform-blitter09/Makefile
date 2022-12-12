@@ -1,16 +1,16 @@
 
 CSRCS += devices.c main.c libc.c dev_jimram.c
 
-CDSRCS = 
+CDSRCS += ../dev/devsd_discard.c
 
-DSRCS = ../dev/blkdev.c ../dev/mbr.c
+DSRCS = ../dev/blkdev.c ../dev/mbr.c ../dev/devsd.c devsdspi.c
 
 ASRCS = blitsbc09.s crt0.s
 ASRCS += tricks.s commonmem.s usermem_sbc09.s dev_jimram_int.s videoll.s
 
 COBJS = $(CSRCS:.c=$(BINEXT))
 AOBJS = $(ASRCS:.s=$(BINEXT))
-DOBJS = blkdev.o mbr.o
+DOBJS = $(DSRCS:.c=$(BINEXT))
 CDOBJS = $(CDSRCS:.c=$(BINEXT))
 OBJS  = $(COBJS) $(AOBJS) $(DOBJS) $(CDOBJS)
 
@@ -25,13 +25,17 @@ JUNK = $(CSRCS:.c=.o) $(ASRCS:.s=.o) $(DSRCS:.c=.o)
 all:	$(OBJS)
 
 $(COBJS): %$(BINEXT): %.c
-	$(CROSS_CC) $(CROSS_CCOPTS) -c $<
+	$(CROSS_CC) $(CROSS_CCOPTS) -o $@ -c $<
+
+#$(CDOBJS): %$(BINEXT): %.c
+#	$(CROSS_CC) $(CROSS_CCOPTS) $(CROSS_CC_SEGDISC) -o $@ -c $<
 
 $(CDOBJS): %$(BINEXT): %.c
-	$(CROSS_CC) $(CROSS_CCOPTS) $(CROSS_CC_SEGDISC) -c $<
+	$(CROSS_CC) $(CROSS_CCOPTS) -o $@ -c $<
 
-$(DOBJS): %$(BINEXT): ../dev/%.c
-	$(CROSS_CC) $(CROSS_CCOPTS) -c $<
+
+$(DOBJS): %$(BINEXT): %.c
+	$(CROSS_CC) $(CROSS_CCOPTS) -o $@ -c $<
 
 $(AOBJS): %$(BINEXT): %.s kernel.def platform.def ../kernel09.def
 	$(CROSS_AS) $(ASOPTS) $< -o $*.o
@@ -51,8 +55,9 @@ image:
 	crt0.o commonmem.o \
 	blitsbc09.o ../start.o ../version.o ../lowlevel-6809.o \
 	tricks.o main.o ../timer.o ../kdata.o devices.o \
-	blkdev.o mbr.o \
 	dev_jimram.o dev_jimram_int.o \
+	$(DOBJS) \
+	$(CDOBJS) \
 	../devio.o ../filesys.o ../process.o ../inode.o ../syscall_fs.o \
 	../syscall_proc.o ../syscall_other.o ../mm.o ../bank16k.o ../swap.o \
 	../tty.o ../devsys.o ../usermem.o ../syscall_fs2.o \
@@ -66,8 +71,9 @@ image:
 	crt0.o commonmem.o \
 	blitsbc09.o ../start.o ../version.o ../lowlevel-6809.o \
 	tricks.o main.o ../timer.o ../kdata.o devices.o \
-	blkdev.o mbr.o \
 	dev_jimram.o dev_jimram_int.o \
+	$(DOBJS) \
+	$(CDOBJS) \
 	../devio.o ../filesys.o ../process.o ../inode.o ../syscall_fs.o \
 	../syscall_proc.o ../syscall_other.o ../mm.o ../bank16k.o ../swap.o \
 	../tty.o ../devsys.o ../usermem.o ../syscall_fs2.o \

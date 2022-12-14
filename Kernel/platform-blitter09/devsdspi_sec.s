@@ -5,6 +5,7 @@
 	.globl _sd_spi_receive_sector_int
 	.globl _sd_spi_transmit_sector_int
 	.globl _xmit_recv
+	.globl _sd_spi_recv_byte
 
         include "kernel.def"
         include "../kernel09.def"
@@ -24,6 +25,42 @@ BLKPARAM_IS_USER_OFFSET equ 2
 ; COMMON MEMORY BANK
 ; -----------------------------------------------------------------------------
 	.area .common
+
+
+_sd_spi_recv_byte
+	pshs 	A
+	lda 	#1
+	ldb     #3
+
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+	
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+
+	sta 	sheila_USRVIA_orb
+	stb 	sheila_USRVIA_orb
+
+	ldb 	sheila_USRVIA_sr
+
+	clr 	sheila_USRVIA_orb
+
+	puls 	A,PC
 
 
 ; static uint8_t xmit_recv(uint8_t b)
@@ -58,7 +95,8 @@ _sd_spi_receive_sector_int
 rd_kernel	
 	ldy 	#512
 srlp	ldb 	#0xFF
-	jsr 	_xmit_recv
+	jsr 	_sd_spi_recv_byte
+;	jsr 	_xmit_recv
 	stb 	,U+
 	leay 	-1,Y	
 	bne 	srlp

@@ -62,8 +62,6 @@ _sd_spi_recv_byte
 
 	ldb 	sheila_USRVIA_sr
 
-	clr 	sheila_USRVIA_orb
-
 	puls 	A,PC
 
 
@@ -83,8 +81,6 @@ _xmit_recv
 
 	ldb 	sheila_USRVIA_sr
 
-	clr 	sheila_USRVIA_orb
-
 	puls 	A,Y,PC
 
 
@@ -97,13 +93,48 @@ _sd_spi_receive_sector_int
 	beq 	rd_kernel
 	jsr 	map_process_always
 rd_kernel	
-	ldy 	#512
-srlp	ldb 	#0xFF
-	jsr 	_sd_spi_recv_byte
-;	jsr 	_xmit_recv
+
+	; enter shift reg mode 2
+
+	lda 	#%000000001		; make clock pin an input
+	sta 	sheila_USRVIA_ddrb
+
+	lda 	sheila_USRVIA_acr
+	anda 	#0xE3
+	ora 	#0x08
+	sta 	sheila_USRVIA_acr
+	lda 	sheila_USRVIA_sr	; initiate first read
+
+
+	ldy 	#511			; note the last bit is special!
+	lda 	#4			; bit in IER for SR full
+srlp	
+
+srwt	bita 	sheila_USRVIA_ifr
+	beq 	srwt
+	ldb 	sheila_USRVIA_sr
 	stb 	,U+
 	leay 	-1,Y	
 	bne 	srlp
+
+
+srwt2	bita 	sheila_USRVIA_ifr	; wait for final bit
+	beq 	srwt2
+
+	; back to mode 0
+
+	lda 	#%000000011		; make clock pin an output again
+	sta 	sheila_USRVIA_ddrb
+	clr 	sheila_USRVIA_orb
+
+	lda 	sheila_USRVIA_acr
+	anda 	#0xE3
+	sta 	sheila_USRVIA_acr
+
+	ldb 	sheila_USRVIA_sr
+	stb	,U+
+
+
 	jsr 	map_kernel
 	clrb 
 	puls 	A,U,Y,PC

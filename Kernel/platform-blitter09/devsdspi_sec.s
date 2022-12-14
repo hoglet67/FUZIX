@@ -29,6 +29,10 @@ BLKPARAM_IS_USER_OFFSET equ 2
 
 _sd_spi_recv_byte
 	pshs 	A
+
+	; note: I tried being clever here and making the I/O accesses use DP references i.e. <sheila_USRVIA_orb
+	; but that failed - not sure if that is a 6522 thing or too fast for my SD CARD?
+
 	lda 	#1
 	ldb     #3
 

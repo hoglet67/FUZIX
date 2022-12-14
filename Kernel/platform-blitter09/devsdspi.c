@@ -39,75 +39,54 @@
 #define sheila_USRVIA_ier			((volatile uint8_t *)0xFE6E)
 #define sheila_USRVIA_ora_nh			((volatile uint8_t *)0xFE6F)
 
+extern uint8_t xmit_recv(uint8_t b);
+extern uint8_t sd_spi_receive_sector_int(void);
+extern uint8_t sd_spi_transmit_sector_int(void);
 
 
+__attribute__((section(".common")))
 void sd_spi_raise_cs(void)
 {
 	// always asserted!
 }
 
+__attribute__((section(".common")))
 void sd_spi_lower_cs(void)
 {
 	// always asserted!
 }
 
-static uint8_t xmit_recv(uint8_t b)
-{
-	uint8_t i;
-	uint8_t bb;
 
-//	irqflags_t irq = di();
-
-	for (i = 0; i < 8; i++) {
-		bb = (b & 0x80)?1:0;
-		*sheila_USRVIA_orb = bb;
-		*sheila_USRVIA_orb = 0x02 | bb;
-		b = b << 1;
-	}
-
-	bb = *sheila_USRVIA_sr;
-
-	*sheila_USRVIA_orb = 0;
-
-//	irqrestore(irq);
-	return bb;
-}
-
+__attribute__((section(".common")))
 void sd_spi_transmit_byte(uint8_t b)
 {
 	xmit_recv(b);
 }
 
+__attribute__((section(".common")))
 uint8_t sd_spi_receive_byte(void)
 {
 	return xmit_recv(0xff);
 }
 
 
-bool sd_spi_receive_sector(void)
-{
-	uint8_t* addr = blk_op.addr;
-	uint8_t* endaddr = addr + 512;
-
-	while (addr != endaddr)
-		*addr++ = xmit_recv(0xff);
-	return 0;
-}
-
-bool sd_spi_transmit_sector(void)
-{
-	uint8_t* addr = blk_op.addr;
-	uint8_t* endaddr = addr + 512;
-
-	while (addr != endaddr)
-		xmit_recv(*addr++);
-	return 0;
-}
-
 __attribute__((section(".discard")))
 void sd_spi_clock(bool go_fast)
 {
 	// do nothing!
+}
+
+__attribute__((section(".common")))
+bool sd_spi_receive_sector(void) {
+	sd_spi_receive_sector_int();
+	return 0;
+}
+
+__attribute__((section(".common")))
+bool sd_spi_transmit_sector(void) {	
+	sd_spi_transmit_sector_int();
+//	kprintf("XMIT:%lx %x %x\n", blk_op.lba, blk_op.addr, (int)blk_op.is_user);
+	return 0;
 }
 
 

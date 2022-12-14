@@ -76,7 +76,7 @@
 
 
 /* Block device define. Each block device can have upto 16 partitions */
-#define MAX_BLKDEV  5    /* 1 JIM RAM drive, SD Card */
+#define MAX_BLKDEV  5    /* 0 JIM RAM drive, SD Card hda hda1 hda2 */
 
 #define CONFIG_SD 1
 #define SD_DRIVE_COUNT 1

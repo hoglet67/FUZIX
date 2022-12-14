@@ -5,7 +5,7 @@ CDSRCS += ../dev/devsd_discard.c
 
 DSRCS = ../dev/blkdev.c ../dev/mbr.c ../dev/devsd.c devsdspi.c
 
-ASRCS = blitsbc09.s crt0.s
+ASRCS = blitsbc09.s crt0.s devsdspi_sec.s
 ASRCS += tricks.s commonmem.s usermem_sbc09.s dev_jimram_int.s videoll.s
 
 COBJS = $(CSRCS:.c=$(BINEXT))
@@ -56,6 +56,7 @@ image:
 	blitsbc09.o ../start.o ../version.o ../lowlevel-6809.o \
 	tricks.o main.o ../timer.o ../kdata.o devices.o \
 	dev_jimram.o dev_jimram_int.o \
+	devsdspi_sec.o \
 	$(DOBJS) \
 	$(CDOBJS) \
 	../devio.o ../filesys.o ../process.o ../inode.o ../syscall_fs.o \
@@ -72,6 +73,7 @@ image:
 	blitsbc09.o ../start.o ../version.o ../lowlevel-6809.o \
 	tricks.o main.o ../timer.o ../kdata.o devices.o \
 	dev_jimram.o dev_jimram_int.o \
+	devsdspi_sec.o \
 	$(DOBJS) \
 	$(CDOBJS) \
 	../devio.o ../filesys.o ../process.o ../inode.o ../syscall_fs.o \

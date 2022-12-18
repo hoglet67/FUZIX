@@ -56,7 +56,7 @@
 # v65c816:	Virtual platform for 65c816 development (flat memory)
 # v68:		Virtual platform for 68000 development
 
-TARGET=blitter09
+TARGET=sbc09
 ENDIANFLAG=-X
 
 # Get the CPU type

@@ -1,0 +1,65 @@
+;;;
+;;; Hardware definitions for SBC09
+;;;
+
+;;;
+;;; Remapped Vectors
+;;;
+
+REMAPPED_VECTORS EQU $F7F0
+
+;;;
+;;; XR68C681 UART
+;;;
+
+UART         EQU  $FE00
+
+UART_MRA     EQU UART+0x0
+UART_SRA     EQU UART+0x1
+UART_CSRA    EQU UART+0x1
+UART_CRA     EQU UART+0x2
+UART_THRA    EQU UART+0x3
+UART_RHRA    EQU UART+0x3
+UART_ACR     EQU UART+0x4
+UART_ISR     EQU UART+0x5
+UART_IMR     EQU UART+0x5
+UART_CTU     EQU UART+0x6
+UART_CTL     EQU UART+0x7
+UART_MRB     EQU UART+0x8
+UART_SRB     EQU UART+0x9
+UART_CSRB    EQU UART+0x9
+UART_CRB     EQU UART+0xa
+UART_THRB    EQU UART+0xb
+UART_RHRB    EQU UART+0xb
+UART_IVR1    EQU UART+0xc
+UART_IPR     EQU UART+0xd ; read input port
+UART_OPCR    EQU UART+0xd ; write
+UART_OPRSET  EQU UART+0xe ; write
+UART_STARTCT EQU UART+0xe ; read command
+UART_OPRCLR  EQU UART+0xf ; write
+UART_STOPCT  EQU UART+0xf ; read command
+
+UART_RXINT   EQU  $01
+UART_TXINT   EQU  $04
+
+;;;
+;;; SD Card Connections
+;;;
+
+SDCLK_MASK   EQU 0x20    ;; OP5
+SDMOSI_MASK  EQU 0x40    ;; OP6
+SDCS_MASK    EQU 0x80    ;; OP7
+
+SDMISO_MASK  EQU 0x20    ;; IP5 - some efficiency gains if this is the same as SDCLK_MASK
+
+;;;
+;;; 16K MMU
+;;;
+
+MMU_MAP      EQU  $FE10
+
+; 16k map entries
+MMU_16_0	EQU	0x00
+MMU_16_4	EQU	0x01
+MMU_16_8	EQU	0x02
+MMU_16_C	EQU	0x03

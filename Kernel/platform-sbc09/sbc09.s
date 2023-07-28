@@ -151,7 +151,8 @@ init_hardware:
         sta  UART_CRA
         lda  #%10100000    ; Set Channel A Tx Extend Bit
         sta  UART_CRA
-        lda  #%10111011    ; Internal 9,600 baud
+#       lda  #%10111011    ; Internal 9,600 baud
+        lda  #%10001000    ; Internal 115,200 baus
         sta  UART_CSRA
         lda  #%01110000    ; Timer Mode, Clock = XTAL/16 = 3686400 / 16 = 230400 Hz
         sta  UART_ACR
